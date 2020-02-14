@@ -27,9 +27,10 @@ sudo ./wordliper.py --company kadeeli --locations netherlands --months --capital
 ```
 
 ### usage
-
+```
 Git clone https://github.com/Kadeeli/wordliper
 python3 wordliper.py
+```
 
 ## Authors
 
