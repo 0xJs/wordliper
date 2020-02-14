@@ -4,7 +4,7 @@
 import argparse
 
 ##ARGUMENTS##
-parser = argparse.ArgumentParser(description='A simple wordlist generator to generate a wordlist with years, company name, months, periods')
+parser = argparse.ArgumentParser(description='A simple wordlist generator to generate worldlists including company name, locations, months, periods and appending years, capitalizing first letters. Basicly permutating the wordlist.')
 parser.add_argument('-c', '--companyname', nargs='+', action='store', type=str, default=[], 
                     help='used to supply a(or multiple) company name(s), seperated by spaces, for the wordlist')
 parser.add_argument('-l', '--locations', nargs='+', action='store', type=str, default=[],
