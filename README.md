@@ -1,0 +1,2 @@
+# wordliper
+Word(list) permutator
