@@ -106,5 +106,8 @@ if args.min and args.max:
 if args.output:
     output_file = args.output
     output_file.write('\n'.join(str(word) for word in wordlist))
+    print("[=] Generated", len(wordlist), "words")
+
 else:
-    print(*wordlist, sep = "\n") 
+    print(*wordlist, sep = "\n")
+    print("[=] Generated", len(wordlist), "words")
