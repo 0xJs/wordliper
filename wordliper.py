@@ -4,19 +4,23 @@
 import argparse
 
 ##ARGUMENTS##
-parser = argparse.ArgumentParser(description='A simple wordlist generator to generate worldlists including company name, locations, months, periods and appending years, capitalizing first letters. Basicly permutating the wordlist.')
-parser.add_argument('-c', '--companyname', nargs='+', action='store', type=str, default=[], 
-                    help='used to supply a(or multiple) company name(s), seperated by spaces, for the wordlist')
-parser.add_argument('-l', '--locations', nargs='+', action='store', type=str, default=[],
-                    help='used to supply locations of the company, which will be added to the wordlist')
+parser = argparse.ArgumentParser(description='A simple wordlist generator to generate worldlists including custom strings such as company name, locations, months, periods and appending years, capitalizing first letters. Basicly permutating the wordlist.')
+parser.add_argument('-s', '--strings', nargs='+', action='store', type=str, default=[], 
+                    help='used to supply a(or multiple) strings such as company name(s), locations etc, seperated by spaces to be added to the wordlist')
 parser.add_argument('-m', '--months', action='store_true', 
                     help='used to add all months of the year to the worldlist')
 parser.add_argument('-p', '--periods', action='store_true',
                     help='used to add all periods of the year to the worldlist, like spring etc')
-parser.add_argument('-ys', '--minyear', action='store', type=int, 
-                    help='used to supply the start year of the year range to be appended to every word in the list')
-parser.add_argument('-ye', '--maxyear', action='store', type=int,
-                    help='used to supply the end year of the year range to be appended to every word in the list')
+parser.add_argument('-aY', '--years', nargs='+', action='store', type=int, default=[], 
+                    help='used to append a year range to every word in the wordlist')
+parser.add_argument('-AS', '--asymbols', action='store_true',
+                    help='used to append symbols to every word in the wordlist')
+parser.add_argument('-As', '--astrings', nargs='+', action='store', type=str, default=[],
+                    help='used to append strings to every word in the wordlist before the symbols are applied')
+parser.add_argument('-PS', '--psymbols', action='store_true',
+                    help='used to prepend symbols to every word in the wordlist')
+parser.add_argument('-Ps', '--pstrings', nargs='+', action='store', type=str, default=[],
+                    help='used to prepend strings to every word in the wordlist before the symbols are applied')
 parser.add_argument('-C', '--capital', action='store_true', 
                     help='used to capitalize every first letter in the word')
 parser.add_argument('-min', '--min', action='store', type=int,
@@ -33,8 +37,11 @@ args = parser.parse_args()
 months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli',
           'augustus', 'september', 'october', 'november', 'december']
 periods = ['lente', 'zomer', 'herfst', 'winter']
+symbols = ['!', '@', '.', '-', '_', '#', '$', '&', '+', '?', '123']
 wordlist = []
 newwordlist = []
+tempnewwordlist = []
+tempnewwordlist2 = []
 
 ##MAKING THE WORDLIST##
 if args.months:
@@ -45,20 +52,46 @@ if args.months:
     print("[+] Adding periods to the worldlist")
     wordlist.extend(periods)
 
-if args.companyname != []:
-    print("[+] Adding company names to the worldlist")
-    wordlist.extend(args.companyname)
+if args.strings != []:
+    print("[+] Adding the provided strings to the worldlist")
+    wordlist.extend(args.strings)
 
-if args.locations != []:
-    print("[+] Adding locations to the worldlist")
-    wordlist.extend(args.locations)
-
-if args.minyear and args.maxyear:
-    print("[+] Adding years to every word in the wordlist")
-    for i in range(args.minyear, args.maxyear+1):
+if args.years != []:
+    print("[+] Appending years to every word in the wordlist")
+    for i in range(args.years[0], args.years[1]+1):
         yearwordlist = [x + str(i) for x in wordlist]
         newwordlist.extend(yearwordlist)
     wordlist.extend(newwordlist)
+
+if args.astrings != [] or args.pstrings != []:
+    if args.astrings != []:
+        print("[+] Appending strings to every word in the wordlist")
+        for i in args.astrings:
+            stringwordlist = [x + str(i) for x in wordlist]
+            tempnewwordlist.extend(stringwordlist)
+
+    if args.pstrings:
+        print("[+] Prepending strings to every word in the wordlist")
+        for i in args.pstrings:
+            stringwordlist = [str(i) + x for x in wordlist]
+            tempnewwordlist2.extend(stringwordlist)
+    wordlist.extend(tempnewwordlist)
+    wordlist.extend(tempnewwordlist2)
+
+if args.asymbols or args.psymbols:
+    if args.asymbols:
+        print("[+] Appending symbols to every word in the wordlist")
+        for i in symbols:
+            symbolwordlist = [x + str(i) for x in wordlist]
+            tempnewwordlist.extend(symbolwordlist)
+
+    if args.psymbols:
+        print("[+] Prepending symbols to every word in the wordlist")
+        for i in symbols:
+            symbolwordlist = [str(i) + x for x in wordlist]
+            tempnewwordlist2.extend(symbolwordlist)
+    wordlist.extend(tempnewwordlist)
+    wordlist.extend(tempnewwordlist2)
 
 if args.capital:
     print("[+] Capitalizing the first letter of every word")
