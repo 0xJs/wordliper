@@ -2,8 +2,9 @@
 #Writen by Jony Schats - Kadeeli - www.jonyschats.nl / https://github.com/Kadeeli
 #Can probably be more efficient, but I can't code so it does its job :D
 import argparse
+import sys
 
-##ARGUMENTS##
+##PARAMETERS##
 parser = argparse.ArgumentParser(description='A simple wordlist generator to generate worldlists including custom strings such as company name, locations, months, periods and appending years, capitalizing first letters. Basicly permutating the wordlist.')
 parser.add_argument('-s', '--strings', nargs='+', action='store', type=str, default=[], 
                     help='used to supply a(or multiple) strings such as company name(s), locations etc, seperated by spaces to be added to the wordlist')
@@ -27,6 +28,8 @@ parser.add_argument('-min', '--min', action='store', type=int,
                     help='used to set the minimum password length')
 parser.add_argument('-max', '--max', action='store', type=int,
                     help='used to set the maximum password length')
+parser.add_argument('-d', '--dutch', action='store_true', 
+                    help='used to translate months and seasons to dutch')
 parser.add_argument("-o", "--output", action='store', 
                     type=argparse.FileType('w'), dest='output',
                     help="Directs the output to a name of your choice")
@@ -34,23 +37,36 @@ args = parser.parse_args()
 
 ##VARIABLES, LISTS etc##
 #List of dutch months used for the wordlist
-months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli',
-          'augustus', 'september', 'october', 'november', 'december']
-periods = ['lente', 'zomer', 'herfst', 'winter']
+months = ['january', 'february', 'march', 'april', 'may', 'june', 'july',
+          'august', 'september', 'october', 'november', 'december']
+seasons = ['spring', 'summer', 'autumn','fall' , 'winter']
+dutch_months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli',
+          'augustus', 'september', 'oktober', 'november', 'december']
+dutch_seasons = ['lente', 'zomer', 'herfst', 'winter']
 symbols = ['!', '@', '.', '-', '_', '#', '$', '&', '+', '?', '123']
 wordlist = []
 newwordlist = []
 tempnewwordlist = []
 tempnewwordlist2 = []
 
+#print help message if no argument is supplied!
+if len(sys.argv)==1:
+    parser.print_help(sys.stderr)
+    sys.exit(1)
+
 ##MAKING THE WORDLIST##
+if args.dutch:
+    print("[+] Translating months and seasons to dutch variants")
+    months = dutch_months
+    seasons = dutch_seasons
+
 if args.months:
     print("[+] Adding months to the worldlist")
     wordlist.extend(months)
 
 if args.months:
-    print("[+] Adding periods to the worldlist")
-    wordlist.extend(periods)
+    print("[+] Adding seasons to the worldlist")
+    wordlist.extend(seasons)
 
 if args.strings != []:
     print("[+] Adding the provided strings to the worldlist")
@@ -107,7 +123,6 @@ if args.output:
     output_file = args.output
     output_file.write('\n'.join(str(word) for word in wordlist))
     print("[=] Generated", len(wordlist), "words")
-
 else:
     print(*wordlist, sep = "\n")
     print("[=] Generated", len(wordlist), "words")
