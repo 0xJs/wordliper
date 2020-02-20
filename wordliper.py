@@ -10,8 +10,8 @@ parser.add_argument('-s', '--strings', nargs='+', action='store', type=str, defa
                     help='used to supply a(or multiple) strings such as company name(s), locations etc, seperated by spaces to be added to the wordlist')
 parser.add_argument('-m', '--months', action='store_true', 
                     help='used to add all months of the year to the worldlist')
-parser.add_argument('-p', '--periods', action='store_true',
-                    help='used to add all periods of the year to the worldlist, like spring etc')
+parser.add_argument('-se', '--seasons', action='store_true',
+                    help='used to add all seaons of the year to the worldlist, like spring etc')
 parser.add_argument('-aY', '--years', nargs='+', action='store', type=int, default=[], 
                     help='used to append a year range to every word in the wordlist, seperate them by spaces for example 2018 2020')
 parser.add_argument('-f', '--file', action='store', type=str,
@@ -66,14 +66,15 @@ if args.months:
     print("[+] Adding months to the worldlist")
     wordlist.extend(months)
 
-if args.months:
+if args.seasons:
     print("[+] Adding seasons to the worldlist")
     wordlist.extend(seasons)
 
-if args.file != "":
+if args.file:
     with open(args.file, 'r') as f:
-        newwordlist = [line.strip() for line in f]
+        newworldlist = [line.strip() for line in f]
         wordlist.extend(newwordlist)
+
 
 if args.strings != []:
     print("[+] Adding the provided strings to the worldlist")
