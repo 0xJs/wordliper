@@ -3,8 +3,7 @@
 A simple wordlist generator to generate worldlists including company name, locations, months, periods and appending years, capitalizing first letters. Basicly permutating the wordlist.
 
 Things I still want to add:
-- Use wordlist as input file
-- Use 1337 as the first 1337 character for every word in the wordlist.
+- Use leetspeak as the first leetspeak character for every word in the wordlist.
 
 ## Getting Started
 ```
